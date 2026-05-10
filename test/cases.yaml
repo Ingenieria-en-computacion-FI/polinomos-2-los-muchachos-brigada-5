@@ -1,0 +1,103 @@
+tests:
+
+  - name: crear_polinomio
+    type: creation
+    expected: "0"
+
+  - name: insercion_simple
+    type: insert
+    terms:
+      - {coef: 3, exp: 2}
+    expected: "3x^2"
+
+  - name: orden_descendente
+    type: insert
+    terms:
+      - {coef: 1, exp: 1}
+      - {coef: 5, exp: 5}
+      - {coef: 3, exp: 3}
+    expected: "5x^5+3x^3+x"
+
+  - name: simplificacion
+    type: insert
+    terms:
+      - {coef: 3, exp: 2}
+      - {coef: 5, exp: 2}
+    expected: "8x^2"
+
+  - name: eliminacion_cero
+    type: insert
+    terms:
+      - {coef: 3, exp: 2}
+      - {coef: -3, exp: 2}
+    expected: "0"
+
+  - name: insercion_compleja
+    type: insert
+    terms:
+      - {coef: 2, exp: 1}
+      - {coef: 4, exp: 5}
+      - {coef: -1, exp: 1}
+      - {coef: 7, exp: 3}
+    expected: "4x^5+7x^3+x"
+
+  - name: suma_basica
+    type: sum
+
+    p1:
+      - {coef: 3, exp: 2}
+      - {coef: 2, exp: 1}
+
+    p2:
+      - {coef: 1, exp: 2}
+      - {coef: 4, exp: 0}
+
+    expected: "4x^2+2x+4"
+
+  - name: suma_cancelacion
+    type: sum
+
+    p1:
+      - {coef: 5, exp: 2}
+
+    p2:
+      - {coef: -5, exp: 2}
+
+    expected: "0"
+
+  - name: multiplicacion_basica
+    type: multiply
+
+    p1:
+      - {coef: 1, exp: 1}
+      - {coef: 1, exp: 0}
+
+    p2:
+      - {coef: 1, exp: 1}
+      - {coef: 1, exp: 0}
+
+    expected: "x^2+2x+1"
+
+  - name: multiplicacion_simplificacion
+    type: multiply
+
+    p1:
+      - {coef: 2, exp: 1}
+      - {coef: 1, exp: 0}
+
+    p2:
+      - {coef: 3, exp: 1}
+      - {coef: -1, exp: 0}
+
+    expected: "6x^2+x-1"
+
+  - name: evaluacion_basica
+    type: evaluate
+
+    p1:
+      - {coef: 3, exp: 2}
+      - {coef: 2, exp: 1}
+      - {coef: 1, exp: 0}
+
+    x: 2
+    expected_value: 17

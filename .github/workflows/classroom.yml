@@ -1,0 +1,57 @@
+name: Autograding Tests
+
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+  - repository_dispatch
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+
+  run-autograding-tests:
+
+    runs-on: ubuntu-latest
+
+    if: github.actor != 'github-classroom[bot]'
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install GCC
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc
+
+      - name: Compile project
+        id: compile
+        run: |
+          gcc \
+            src/polinomio.c \
+            tests/test_runner.c \
+            -Iinclude \
+            -lm \
+            -o test_runner
+
+      - name: Run tests
+        id: run-tests
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "TAD Polinomio"
+          setup-command: ""
+          command: "./test_runner"
+          timeout: 10
+          max-score: 100
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          RUN-TESTS_RESULTS: "${{ steps.run-tests.outputs.result }}"
+        with:
+          runners: run-tests
