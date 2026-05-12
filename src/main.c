@@ -79,8 +79,5 @@ int main() {
     destruirPolinomio(p8);
     printf("Polinomio destruido exitosamente\n");
 
-    printf("\n=== Los muchachos completaron el proyecto exitosamente ===\n");
-    printf("=== Ponganos 10 profa :) :( ===\n");
-
     return 0;
 }

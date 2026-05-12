@@ -230,7 +230,7 @@ char* polinomioToString(Polinomio* p) {
         }
 
         strcat(cadena, temp);
-        actual = actual->siguiente;
+        actual = actual->siguiente; 
     }
 
     return cadena;
