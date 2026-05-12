@@ -1,16 +1,14 @@
 #include "polinomio.h"
 
-//Implementación de funciones
-
 Polinomio* crearPolinomio() {
     Polinomio *p = (Polinomio*)malloc(sizeof(Polinomio));
-    if(p==NULL) {
+    if (p == NULL) {
         printf("No se pudo reservar memoria para el polinomio xD\n");
         return NULL;
-    }else{
-        p->cabeza=NULL;
-        p->cola=NULL;
-        p->numTerminos=0;
+    } else {
+        p->cabeza = NULL;
+        p->cola = NULL;
+        p->numTerminos = 0;
     }
     return p;
 }
@@ -35,12 +33,12 @@ void insertarTermino(Polinomio* p, float coeficiente, int exponente) {
     nuevo->termino.coeficiente = coeficiente;
     nuevo->termino.exponente   = exponente;
     nuevo->siguiente = NULL;
-    nuevo->anterior = NULL;
+    nuevo->anterior  = NULL;
     p->numTerminos++;
 
     if (p->cabeza == NULL) {
         p->cabeza = nuevo;
-        p->cola = nuevo;
+        p->cola   = nuevo;
         return;
     }
 
@@ -57,13 +55,13 @@ void insertarTermino(Polinomio* p, float coeficiente, int exponente) {
     }
 
     nuevo->siguiente = actual->siguiente;
-    nuevo->anterior  = actual;
+    nuevo->anterior = actual;
 
-    if (actual->siguiente != NULL) {
+    if (actual->siguiente != NULL)
         actual->siguiente->anterior = nuevo;
-    }else{
+    else
         p->cola = nuevo;
-    }
+
     actual->siguiente = nuevo;
 }
 
@@ -77,7 +75,7 @@ void eliminarTermino(Polinomio* p, int exponente) {
 
     if (actual == NULL) return;
 
-    if (actual->anterior != NULL) 
+    if (actual->anterior != NULL)
         actual->anterior->siguiente = actual->siguiente;
     else
         p->cabeza = actual->siguiente;
@@ -91,14 +89,14 @@ void eliminarTermino(Polinomio* p, int exponente) {
     p->numTerminos--;
 }
 
-float potencia(float base, int exp) {   // funcion que remplaza pow con la libreria math.h
+float potencia(float base, int exp) { // funcion que remplaza pow con la libreria math.h
     float resultado = 1.0;
     for (int i = 0; i < exp; i++)
         resultado *= base;
     return resultado;
 }
 
-float evaluacionPolinomio(Polinomio* p, float x) {
+float evaluarPolinomio(Polinomio* p, float x) {
     if (p == NULL || p->cabeza == NULL) return 0.0f;
 
     float resultado = 0.0f;
@@ -112,7 +110,7 @@ float evaluacionPolinomio(Polinomio* p, float x) {
     return resultado;
 }
 
-Polinomio* sumaPolinomios(Polinomio* p1, Polinomio* p2) {
+Polinomio* sumarPolinomios(Polinomio* p1, Polinomio* p2) {
     Polinomio* resultado = crearPolinomio();
     if (resultado == NULL) return NULL;
 
@@ -131,7 +129,7 @@ Polinomio* sumaPolinomios(Polinomio* p1, Polinomio* p2) {
     return resultado;
 }
 
-Polinomio* multiplicacionPolinomios(Polinomio* p1, Polinomio* p2) {
+Polinomio* multiplicarPolinomios(Polinomio* p1, Polinomio* p2) {
     Polinomio* resultado = crearPolinomio();
     if (resultado == NULL) return NULL;
 
@@ -139,7 +137,7 @@ Polinomio* multiplicacionPolinomios(Polinomio* p1, Polinomio* p2) {
     while (nodo1 != NULL) {
         Nodo* nodo2 = p2->cabeza;
         while (nodo2 != NULL) {
-            insertarTermino(resultado, nodo1->termino.coeficiente *nodo2->termino.coeficiente, nodo1->termino.exponente  + nodo2->termino.exponente);
+            insertarTermino(resultado, nodo1->termino.coeficiente * nodo2->termino.coeficiente, nodo1->termino.exponente   + nodo2->termino.exponente);
             nodo2 = nodo2->siguiente;
         }
         nodo1 = nodo1->siguiente;
@@ -148,18 +146,30 @@ Polinomio* multiplicacionPolinomios(Polinomio* p1, Polinomio* p2) {
     return resultado;
 }
 
+void destruirPolinomio(Polinomio* p) {
+    if (p == NULL) return;
+
+    Nodo* actual = p->cabeza;
+    while (actual != NULL) {
+        Nodo* temp = actual->siguiente;
+        free(actual);
+        actual = temp;
+    }
+    free(p);
+}
+
 void mostrarPolinomio(Polinomio* p) {
     if (p == NULL || p->cabeza == NULL) {
         printf("0\n");
         return;
     }
 
-    Nodo* actual = p->cabeza;
-    int primero = 1;
+    Nodo* actual  = p->cabeza;
+    int   primero = 1;
 
     while (actual != NULL) {
         float coef = actual->termino.coeficiente;
-        int exp  = actual->termino.exponente;
+        int   exp  = actual->termino.exponente;
         int esPositivo = (coef ==  1);
         int esNegativo = (coef == -1);
 
@@ -170,14 +180,12 @@ void mostrarPolinomio(Polinomio* p) {
         if (exp == 0) {
             printf("%.g", coef);
         } else if (exp == 1) {
-            
-            if(esPositivo) printf("x");
+            if (esPositivo) printf("x");
             else if (esNegativo) printf("-x");
             else printf("%.gx", coef);
         } else {
-
-            if(esPositivo) printf("x^%d", exp);
-            else if(esNegativo) printf("-x^%d", exp);
+            if (esPositivo) printf("x^%d", exp);
+            else if (esNegativo) printf("-x^%d", exp);
             else printf("%.gx^%d", coef, exp);
         }
 
@@ -186,7 +194,7 @@ void mostrarPolinomio(Polinomio* p) {
     printf("\n");
 }
 
-char* polinomioACadena(Polinomio* p) {
+char* polinomioToString(Polinomio* p) {
     char* cadena = (char*) malloc(256);
     cadena[0] = '\0';
 
@@ -195,7 +203,7 @@ char* polinomioACadena(Polinomio* p) {
         return cadena;
     }
 
-    Nodo* actual = p->cabeza;
+    Nodo* actual  = p->cabeza;
     int primero = 1;
     char temp[64];
 
@@ -212,7 +220,7 @@ char* polinomioACadena(Polinomio* p) {
         if (exp == 0) {
             sprintf(temp, "%.g", coef);
         } else if (exp == 1) {
-            if(esPositivo) sprintf(temp, "x");
+            if (esPositivo) sprintf(temp, "x");
             else if (esNegativo) sprintf(temp, "-x");
             else sprintf(temp, "%.gx", coef);
         } else {
@@ -228,15 +236,12 @@ char* polinomioACadena(Polinomio* p) {
     return cadena;
 }
 
-// main.c - No habia archivo creado entonces se unio el polinomio.c el main.c
+int main() {
 
- int main() {
-
-    printf("===CASO 1: Crear un polinomio vacio ===\n");
-    Polinomio* p= crearPolinomio();
+    printf("=== CASO 1: Crear un polinomio vacio ===\n");
+    Polinomio* p = crearPolinomio();
     printf("P: "); mostrarPolinomio(p);
-    printf("Esperado: 0\n");
-    printf("\n");
+    printf("Esperado: 0\n\n");
 
     printf("=== CASO 2: Suma de polinomios ===\n");
     Polinomio* p1 = crearPolinomio();
@@ -251,7 +256,7 @@ char* polinomioACadena(Polinomio* p) {
     printf("P1: "); mostrarPolinomio(p1);
     printf("P2: "); mostrarPolinomio(p2);
 
-    Polinomio* suma = sumaPolinomios(p1, p2);
+    Polinomio* suma = sumarPolinomios(p1, p2);
     printf("P1+P2: "); mostrarPolinomio(suma);
     printf("Esperado: 4x^2+2x+5\n");
 
@@ -284,7 +289,7 @@ char* polinomioACadena(Polinomio* p) {
     printf("P5: "); mostrarPolinomio(p5);
     printf("P6: "); mostrarPolinomio(p6);
 
-    Polinomio* producto = multiplicacionPolinomios(p5, p6);
+    Polinomio* producto = multiplicarPolinomios(p5, p6);
     printf("P5*P6: "); mostrarPolinomio(producto);
     printf("Esperado: x^2-1\n");
 
@@ -294,17 +299,23 @@ char* polinomioACadena(Polinomio* p) {
     insertarTermino(p7, 2, 1);
     insertarTermino(p7, 1, 0);
     printf("P7: "); mostrarPolinomio(p7);
-    printf("P7(2) = %.2f\n", evaluacionPolinomio(p7, 2));
+    printf("P7(2) = %.2f\n", evaluarPolinomio(p7, 2));
     printf("Esperado: 17\n");
-    printf("\n");
 
-    printf("=== Caso 7: Conversión de polinomio a cadena ===\n");
-    char* cadena = polinomioACadena(p1);
+    printf("\n=== Caso 7: Conversion a cadena ===\n");
+    char* cadena = polinomioToString(p1);
     printf("Cadena: %s\n", cadena);
     free(cadena);
-    printf("\n");
 
-    printf("=== Los muchachos completaron el proyecto exitosamente ===\n");
+    printf("\n=== CASO 8: Destruir polinomio ===\n");
+    Polinomio* p8 = crearPolinomio();
+    insertarTermino(p8, 5, 3);
+    insertarTermino(p8, 2, 1);
+    printf("Antes de destruir: "); mostrarPolinomio(p8);
+    destruirPolinomio(p8);
+    printf("Polinomio destruido exitosamente\n");
+
+    printf("\n=== Los muchachos completaron el proyecto exitosamente ===\n");
     printf("=== Ponganos 10 profa :( ===\n");
 
     return 0;

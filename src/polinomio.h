@@ -1,7 +1,7 @@
-#ifndef __POLINOMIO_H__
-#define __POLINOMIO_H__
+#ifndef POLINOMIO_H
+#define POLINOMIO_H
 
-#include<stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -22,17 +22,15 @@ typedef struct {
     int numTerminos;
 } Polinomio;
 
-//Firmas de las funciones a emplear
-
 Polinomio* crearPolinomio();
-void insertarTermino(Polinomio *p, float coeficiente, int exponente);
-void eliminarTermino(Polinomio *p, int exponente);
-float evaluacionPolinomio(Polinomio *p, float x);
+void insertarTermino(Polinomio* p, float coeficiente, int exponente);
+void eliminarTermino(Polinomio* p, int exponente);
 float potencia(float base, int exp);
-Polinomio* sumaPolinomios(Polinomio *p1, Polinomio *p2);
-Polinomio* multiplicacionPolinomios(Polinomio *p1, Polinomio *p2);
-void mostrarPolinomio(Polinomio *p);
-char* polinomioACadena(Polinomio* p);
+float evaluarPolinomio(Polinomio* p, float x);
+Polinomio* sumarPolinomios(Polinomio* p1, Polinomio* p2);
+Polinomio* multiplicarPolinomios(Polinomio* p1, Polinomio* p2);
+void mostrarPolinomio(Polinomio* p);
+char* polinomioToString(Polinomio* p);
+void destruirPolinomio(Polinomio* p);
 
 #endif
-
