@@ -80,7 +80,7 @@ int main() {
     printf("Polinomio destruido exitosamente\n");
 
     printf("\n=== Los muchachos completaron el proyecto exitosamente ===\n");
-    printf("=== Ponganos 10 profa :( ===\n");
+    printf("=== Ponganos 10 profa :) :( ===\n");
 
     return 0;
 }

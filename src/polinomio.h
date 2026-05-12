@@ -1,5 +1,5 @@
-#ifndef __POLINOMIO_H__
-#define __POLINOMIO_H__
+#ifndef POLINOMIO_H
+#define POLINOMIO_H
 
 #include <stdio.h>
 #include <stdlib.h>
